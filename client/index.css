@@ -1,0 +1,20 @@
+h1{
+    color: hotpink;
+    text-align: center;
+}
+div#herd{
+    font-size: 2em;
+    font-weight: bolder;
+    margin: 1em 0 1em 0;
+    text-align: center;
+}
+.goat{
+    padding: 0.5em 0 0.5em 0;
+    margin: 0.5em;
+}
+.old{
+    border: 3px solid green;
+}
+.young{
+    border: 3px solid red;
+}

@@ -1,9 +1,14 @@
 const express = require("express");
-const { restart } = require("nodemon");
+const cors = require("cors");
 
-const { goats, nextId } = require("./goats");
+let { goats, nextId } = require("./goats");
+const logger = require("./logger")
 
 const app = express();
+
+app.use(express.json());
+app.use(cors());
+app.use(logger);
 
 app.get("/", (req, res) => {
     res.json({
@@ -24,6 +29,18 @@ app.get("/goats", (req, res) => {
     res.json(goats);
 })
 
+app.post("/goats", (req, res) => {
+    const newGoat = req.body;
+
+    newGoat["id"] = nextId;
+
+    nextId += 1;
+
+    goats.push(newGoat);
+
+    res.status(201).json(newGoat);
+})
+
 app.get("/goats/:id", (req, res) => {
 
     const id = req.params["id"];
@@ -39,6 +56,23 @@ app.get("/goats/:id", (req, res) => {
     }
 
     
+})
+
+app.delete("/goats/:id", (req, res) => {
+
+    const id = req.params["id"];
+
+    const exists = goats.filter(g => g["id"] ==id).length == 1;
+
+    if (exists){
+        goats = goats.filter(g => g["id"] != id)
+
+        res.sendStatus(204);
+    } else {
+        res.status(404).json({
+            error: "No such goat!"
+        })
+    }
 })
 
 module.exports = app;
