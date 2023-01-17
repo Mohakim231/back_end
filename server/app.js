@@ -1,4 +1,5 @@
 const express = require("express");
+const { restart } = require("nodemon");
 
 const { goats, nextId } = require("./goats");
 
@@ -12,6 +13,23 @@ app.get("/", (req, res) => {
 
 app.get("/goats", (req, res) => {
     res.json(goats);
+})
+
+app.get("/goats/:id", (req, res) => {
+
+    const id = req.params["id"];
+
+    const goat = goats.filter(g => g["id"] == id)[0];
+
+    if (goat) {
+        res.json(goat);
+    } else {
+        res.status(404).json({
+            error: "No such goat!"
+        })
+    }
+
+    
 })
 
 module.exports = app;
