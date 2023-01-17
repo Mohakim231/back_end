@@ -12,6 +12,15 @@ app.get("/", (req, res) => {
 })
 
 app.get("/goats", (req, res) => {
+
+    const{ maxAge } = req.query;
+
+    if (maxAge) {
+        res.json(goats.filter(g => g["age"] <= maxAge));
+    }else{
+        res.json(goats);
+    }
+
     res.json(goats);
 })
 
